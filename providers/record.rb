@@ -88,6 +88,7 @@ action :create do
       Chef::Log.debug("Created record: #{record_attributes.inspect}")
     rescue Excon::Errors::BadRequest => e
       Chef::Log.error Nokogiri::XML( e.response.body ).xpath( "//xmlns:Message" ).text
+      raise
     end
   end
 
@@ -147,6 +148,7 @@ action :delete do
     Chef::Log.debug("Destroyed record: #{name} #{type}")
   rescue Excon::Errors::BadRequest => e
     Chef::Log.error Nokogiri::XML(e.response.body).xpath('//xmlns:Message').text
+    raise
   end
 
   if record.nil?
